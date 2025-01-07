@@ -4,6 +4,7 @@ import json
 import base64
 from dotenv import load_dotenv
 import os
+from utils.alert import reminder
 
 load_dotenv() 
 
@@ -103,13 +104,15 @@ def get_boards():
         {   
         'key': issue.get('key'),
         'summary': issue.get('fields', {}).get('summary'),
-        'status': issue.get('fields', {}).get('status', {}).get('name')
+        'status': issue.get('fields', {}).get('status', {}).get('name'),
+        'duedate':issue.get('fields', {}).get('duedate')
         }
         for issue in issues_data.get('issues', [])
         ]
 
     # Display the boards and assigned issues
-    return json.dumps(user_issues, indent=4)
+    reminder(user_issues)
+    return '<p>The app is running</p>'
 # def decode_jwt(token):
 #     # Split the token into its parts
 #     header, payload, signature = token.split('.')
